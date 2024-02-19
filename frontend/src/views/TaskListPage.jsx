@@ -10,7 +10,6 @@ const TaskListPage = () => {
 
 
   const getTasks = async () => {
-
     try {
       setIsLoading(true)
       const response = await axios.get('http://localhost:3000/api/tasks')
