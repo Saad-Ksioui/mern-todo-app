@@ -34,7 +34,7 @@ const Task = ({task, getTasks}) => {
           toast.success('The Task has been deleted')
           getTasks()
         } catch (error) {
-          toast.error('Error updating task:', error);
+          toast.error('Error deleting task:', error);
         }
       }
     } else {
@@ -43,7 +43,7 @@ const Task = ({task, getTasks}) => {
         toast.success('The Task has been deleted')
         getTasks()
       } catch (error) {
-        toast.error('Error updating task:', error);
+        toast.error('Error deleting task:', error);
       }
     }
 
