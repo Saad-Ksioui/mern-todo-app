@@ -4,8 +4,10 @@ const asyncHandler = require('express-async-handler')
 // GET all tasks
 const getTasks = asyncHandler(async (req, res) => {
   try {
-    const tasks = await Task.find({});
+    const {user_id} = req.params
+    const tasks = await Task.find({user_id: user_id});
     res.status(200).json(tasks);
+    
   } catch (error) {
     console.error('Error fetching tasks:', error);
     res.status(500).send('Internal Server Error');
@@ -15,6 +17,7 @@ const getTasks = asyncHandler(async (req, res) => {
 const getTask = asyncHandler(async (req, res) => {
   try {
     const {id} = req.params
+
     const task = await Task.findById(id);
     if (!task) {
       res.status(404).send('Task not found');
@@ -29,7 +32,8 @@ const getTask = asyncHandler(async (req, res) => {
 // Create a new task
 const createTask = asyncHandler(async (req, res) => {
   try {
-    const result = await Task.create(req.body);
+    const {taskName, description, dueDate, startTime, endTime, user_id} = req.body
+    const result = await Task.create({taskName, description, dueDate, startTime, endTime, user_id});
     res.status(200).json(result);
   } catch (error) {
     console.error('Error creating task:', error);
@@ -47,6 +51,17 @@ const updateStatus = asyncHandler(async (req, res) => {
       res.status(500).send('Internal Server Error');
     }
 })
+// update a task
+const updateTask = async (req, res) => {
+  const { id } = req.params
+  const task = await Task.findOneAndUpdate({_id: id}, {
+    ...req.body
+  })
+  if (!task) {
+    return res.status(400).json({error: 'No such task'})
+  }
+  res.status(200).json(task)
+}
 // DELETE a task
 const deleteTask = asyncHandler(async (req, res) => {
   try {
@@ -64,5 +79,6 @@ module.exports = {
   getTask,
   createTask,
   updateStatus,
+  updateTask,
   deleteTask
 }

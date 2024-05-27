@@ -17,7 +17,7 @@ const Task = ({task, getTasks}) => {
   //! Handle Complete
   const handleComplete = async (id) => {
     try {
-      await axios.put(`http://localhost:3000/api/tasks/${id}`);
+      await axios.put(`http://localhost:3000/api/tasks/status/${id}`);
       toast.success('The Status has been updated')
       getTasks()
     } catch (error) {

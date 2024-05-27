@@ -11,17 +11,20 @@ const TaskCreatePage = () => {
   const [endTime, setEndTime] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
-  const submitToDB = async(e) => {
+
+  const userId = localStorage.getItem('user').split(',')[1]
+
+  const submitToDB = async (e) => {
     e.preventDefault()
-    if(taskName === '' || dueDate === '' || startTime === '' || endTime === ''){
-      toast.error("Please fill all fields")
+    if (taskName === '' || dueDate === '' || startTime === '' || endTime === '') {
+      toast.error("Remplissez tous les champs")
       return
     }
     try {
       setIsLoading(true)
       const response = await axios.post('http://localhost:3000/api/tasks/create',
-      {taskName: taskName, description: description, dueDate: dueDate, startTime: startTime, endTime: endTime, status: false})
-      toast.success(`Add ${response.data.taskName} successfully`)
+        { taskName: taskName, description: description, dueDate: dueDate, startTime: startTime, endTime: endTime, user_id: userId })
+      toast.success(`Ajouter ${response.data.taskName} avec succès`)
       setIsLoading(false)
       navigate('/tasks')
     } catch (error) {
